@@ -1,0 +1,45 @@
+%manual
+REFERENCE:
+    https://software.ecmwf.int/wiki/display/DAPP/SAPP+monitoring+using+EcFlow
+    https://software.ecmwf.int/wiki/pages/editpage.action?pageId=31072532
+    https://cosdoc/opsproc/sds/sapp
+    
+DESCRIPTION:
+    Member States Backup , MS1 BUFR0001 extraction; 
+    freq: 15min , window: 24h.
+    /vol/msbackup avail .space: 128GB
+   
+CONSOLE:
+    re-run once, then re-queue
+    Immediate CALL OUT
+        ObsGroup analyst for ext_sched.py errors
+        SDS analyst for rsync errors 
+  
+%end
+%comment
+#============================================================
+# Using angle brackets means we look in directory ECF_INCLUDE
+#============================================================
+%end
+%include <head.h>
+%include <sapp.h>
+
+echo start of job
+if [[ $CLU = $MAIN_CLU ]];then
+%nopp
+    hhmm=`date +%H%M`
+%end
+    # skip msbackup before main DA/DC extractions .... TBC
+    if [[ "$hhmm" -eq "0202" || "$hhmm" -eq "0502" || "$hhmm" -eq "0802" || "$hhmm" -eq "1102" || "$hhmm" -eq "1402" ||"$hhmm" -eq "1702" || "$hhmm" -eq "2002" || "$hhmm" -eq "2202" ]];then
+        echo skipping MS backup extraction
+    else
+        cd $GPFS_ROOT/outbox/ms
+        $SAPP_ROOT/scripts/ext_sched.py --mode=run --qname=msbkup --family=MS1 --item=BUFR0001 --cycles=00,03,06,09,12,15,18,21 --start=today --stop=today --shift=0
+        
+        #HPC only
+        #rsync -avu --chmod=u+rw,g+r,o+r --delete /sapp/outbox/ms/ emos@ecgb-exports:/gpfs/ecgb/msbackup   #was emos@ecgb:/vol/msbackup
+        echo end of job
+    fi
+fi
+sleep 10
+%include <tail.h>
