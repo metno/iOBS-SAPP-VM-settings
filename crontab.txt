@@ -1,7 +1,7 @@
 #3-59/5 * * * * /usr/bin/perl /home/ma/macz/to_gts.pl /home/ma/macz/gts_in/`date --date="8 minutes ago" +"data\%H\%M"` /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data
 3-59/5 * * * * export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/site-packages && /usr/bin/python /home/ma/macz/to_gts.py -d /home/ma/macz/gts_in/ -o /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data -r 8 > /dev/null 2>&1
 05 03 * * * find /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/ingested -type f -mtime +8 -delete > /dev/null 2>&1
-09 * * * * /bin/bash /home/ma/macz/get_files_to_backup.sh  > /dev/null 2>&1
+09 02 * * * /bin/bash /home/ma/macz/get_files_to_backup.sh  > /dev/null 2>&1
 #30 * * * * /opt/ve1/sapp/mysql/msb/my sqldump --replace sapp_oper deqc_monitor > /home/ma/macz/mysqldumps/deqc_monitor.sql
 #35 * * * * /bin/bash /home/ma/macz/scp_mysqldump.sh
 #*/10 * * * *  ssh vsapp01  "find /sapp/inbox/egrr_gts/ingested/ -mmin -11 -type f -exec scp {} macz@vsapp02:/sapp/inbox/egrr_gts/data \;" > /dev/null 2>&1
