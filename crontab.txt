@@ -5,5 +5,7 @@
 35 * * * * /bin/bash /home/ma/macz/scp_mysqldump.sh
 13 01,04,07,10,13,16,19,22 * * * rsync --recursive --stats --update --delete-after /opt/ve1/sapp/git/macz/sapp/outbox/ms/ trollcast@157.249.177.106:/data/iobssapp/output/  > /dev/null 2>&1
 16 02 * * * /bin/bash /home/ma/macz/get_files_to_backup.sh  > /dev/null 2>&1
-56 * * * * export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/site-packages && /usr/bin/python fix_other_data_files.py  -d /home/ma/macz/other_data_in/ -o /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data/ > /dev/null 2>&
+56 * * * * export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/site-packages && /usr/bin/python fix_other_data_files.py  -d /home/ma/macz/other_data_in/ -o /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data/ > /dev/null 2>&1
+
 #*/10 * * * *  ssh vsapp01  "find /sapp/inbox/egrr_gts/ingested/ -mmin -11 -type f -exec scp {} macz@vsapp02:/sapp/inbox/egrr_gts/data \;" > /dev/null 2>&1
+
