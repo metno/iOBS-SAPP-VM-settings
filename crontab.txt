@@ -2,7 +2,10 @@
 3-59/5 * * * * export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/site-packages && /usr/bin/python /home/ma/macz/iobs_scripts/to_gts.py -d /home/ma/macz/gts_in/ -o /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data -r 8 > /dev/null 2>&1
 05 03 * * * find /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/ingested -type f -mtime +8 -delete > /dev/null 2>&1
 09 02 * * * /bin/bash /home/ma/macz/iobs_scripts/get_files_to_backup.sh  > /dev/null 2>&1
-26,56 * * * * export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/site-packages && /usr/bin/python /home/ma/macz/iobs_scripts/fix_other_data_files.py  -d /home/ma/macz/other_data_in/ -o /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data/ > /dev/null 2>&1  
+05 03 * * * find /home/ma/macz/other_data_in/ -type f -mtime +1 -delete > /dev/null 2>&1
+#26,56 * * * * export PYTHONPATH=${PYTHONPATH}:/usr/lib/python2.7/site-packages && /usr/bin/python /home/ma/macz/iobs_scripts/fix_other_data_files.py  -d /home/ma/macz/other_data_in/ -o /opt/ve1/sapp/git/macz/sapp/inbox/egrr_gts/data/ > /dev/null 2>&1  
+
+
 #>> /home/ma/macz/test_fix_other.log 2>&1
 #30 * * * * /opt/ve1/sapp/mysql/msb/my sqldump --replace sapp_oper deqc_monitor > /home/ma/macz/mysqldumps/deqc_monitor.sql
 #35 * * * * /bin/bash /home/ma/macz/scp_mysqldump.sh
